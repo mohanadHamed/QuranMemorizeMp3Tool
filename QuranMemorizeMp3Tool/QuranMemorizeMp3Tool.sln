@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29403.142
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuranMemorizeMp3Tool", "QuranMemorizeMp3Tool.csproj", "{0CEB4ABE-7DF1-4C89-9057-4C0D3B3598CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0CEB4ABE-7DF1-4C89-9057-4C0D3B3598CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CEB4ABE-7DF1-4C89-9057-4C0D3B3598CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CEB4ABE-7DF1-4C89-9057-4C0D3B3598CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CEB4ABE-7DF1-4C89-9057-4C0D3B3598CE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B0B130A2-1EC2-439D-96A8-614E68C596EF}
+	EndGlobalSection
+EndGlobal
