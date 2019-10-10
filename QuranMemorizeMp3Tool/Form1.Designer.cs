@@ -35,7 +35,7 @@
          this.destTextBox = new System.Windows.Forms.TextBox();
          this.label2 = new System.Windows.Forms.Label();
          this.label3 = new System.Windows.Forms.Label();
-         this.typeComboBox = new System.Windows.Forms.ComboBox();
+         this.juzComboBox = new System.Windows.Forms.ComboBox();
          this.label4 = new System.Windows.Forms.Label();
          this.dynamicGapComboBox = new System.Windows.Forms.ComboBox();
          this.fixedGapNumericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -57,14 +57,14 @@
          // 
          // srcTextBox
          // 
-         this.srcTextBox.Location = new System.Drawing.Point(116, 28);
+         this.srcTextBox.Location = new System.Drawing.Point(135, 28);
          this.srcTextBox.Name = "srcTextBox";
          this.srcTextBox.Size = new System.Drawing.Size(444, 20);
          this.srcTextBox.TabIndex = 1;
          // 
          // srcBrowseButton
          // 
-         this.srcBrowseButton.Location = new System.Drawing.Point(586, 26);
+         this.srcBrowseButton.Location = new System.Drawing.Point(605, 26);
          this.srcBrowseButton.Name = "srcBrowseButton";
          this.srcBrowseButton.Size = new System.Drawing.Size(75, 23);
          this.srcBrowseButton.TabIndex = 2;
@@ -74,7 +74,7 @@
          // 
          // destBrowseButton
          // 
-         this.destBrowseButton.Location = new System.Drawing.Point(586, 52);
+         this.destBrowseButton.Location = new System.Drawing.Point(605, 52);
          this.destBrowseButton.Name = "destBrowseButton";
          this.destBrowseButton.Size = new System.Drawing.Size(75, 23);
          this.destBrowseButton.TabIndex = 5;
@@ -84,7 +84,7 @@
          // 
          // destTextBox
          // 
-         this.destTextBox.Location = new System.Drawing.Point(116, 54);
+         this.destTextBox.Location = new System.Drawing.Point(135, 54);
          this.destTextBox.Name = "destTextBox";
          this.destTextBox.Size = new System.Drawing.Size(444, 20);
          this.destTextBox.TabIndex = 4;
@@ -103,25 +103,49 @@
          this.label3.AutoSize = true;
          this.label3.Location = new System.Drawing.Point(13, 95);
          this.label3.Name = "label3";
-         this.label3.Size = new System.Drawing.Size(53, 13);
+         this.label3.Size = new System.Drawing.Size(56, 13);
          this.label3.TabIndex = 6;
-         this.label3.Text = "Join Type";
+         this.label3.Text = "Select Juz";
          // 
-         // typeComboBox
+         // juzComboBox
          // 
-         this.typeComboBox.FormattingEnabled = true;
-         this.typeComboBox.Items.AddRange(new object[] {
-            "File per Sura",
-            "File per Page",
-            "File per Juz",
-            "File per Hizb",
-            "File per 1/2 Hizb",
-            "File per 1/4 Hizb"});
-         this.typeComboBox.Location = new System.Drawing.Point(116, 92);
-         this.typeComboBox.Name = "typeComboBox";
-         this.typeComboBox.Size = new System.Drawing.Size(189, 21);
-         this.typeComboBox.TabIndex = 7;
-         this.typeComboBox.Text = "File per Hizb";
+         this.juzComboBox.FormattingEnabled = true;
+         this.juzComboBox.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30"});
+         this.juzComboBox.Location = new System.Drawing.Point(135, 92);
+         this.juzComboBox.Name = "juzComboBox";
+         this.juzComboBox.Size = new System.Drawing.Size(189, 21);
+         this.juzComboBox.TabIndex = 7;
+         this.juzComboBox.Text = "1";
          // 
          // label4
          // 
@@ -144,7 +168,7 @@
             "Next Aya Duration (1x)",
             "Next Aya Duration (1.5x)",
             "Next Aya Duration (2x)"});
-         this.dynamicGapComboBox.Location = new System.Drawing.Point(116, 131);
+         this.dynamicGapComboBox.Location = new System.Drawing.Point(135, 131);
          this.dynamicGapComboBox.Name = "dynamicGapComboBox";
          this.dynamicGapComboBox.Size = new System.Drawing.Size(189, 21);
          this.dynamicGapComboBox.TabIndex = 9;
@@ -152,7 +176,7 @@
          // 
          // fixedGapNumericUpDown
          // 
-         this.fixedGapNumericUpDown.Location = new System.Drawing.Point(116, 171);
+         this.fixedGapNumericUpDown.Location = new System.Drawing.Point(135, 171);
          this.fixedGapNumericUpDown.Name = "fixedGapNumericUpDown";
          this.fixedGapNumericUpDown.Size = new System.Drawing.Size(63, 20);
          this.fixedGapNumericUpDown.TabIndex = 10;
@@ -162,14 +186,14 @@
          this.label5.AutoSize = true;
          this.label5.Location = new System.Drawing.Point(12, 173);
          this.label5.Name = "label5";
-         this.label5.Size = new System.Drawing.Size(81, 13);
+         this.label5.Size = new System.Drawing.Size(108, 13);
          this.label5.TabIndex = 11;
-         this.label5.Text = "Fixed Time Gap";
+         this.label5.Text = "Extra Fixed Time Gap";
          // 
          // label6
          // 
          this.label6.AutoSize = true;
-         this.label6.Location = new System.Drawing.Point(185, 173);
+         this.label6.Location = new System.Drawing.Point(204, 173);
          this.label6.Name = "label6";
          this.label6.Size = new System.Drawing.Size(49, 13);
          this.label6.TabIndex = 12;
@@ -204,7 +228,7 @@
          this.Controls.Add(this.fixedGapNumericUpDown);
          this.Controls.Add(this.dynamicGapComboBox);
          this.Controls.Add(this.label4);
-         this.Controls.Add(this.typeComboBox);
+         this.Controls.Add(this.juzComboBox);
          this.Controls.Add(this.label3);
          this.Controls.Add(this.destBrowseButton);
          this.Controls.Add(this.destTextBox);
@@ -229,7 +253,7 @@
       private System.Windows.Forms.TextBox destTextBox;
       private System.Windows.Forms.Label label2;
       private System.Windows.Forms.Label label3;
-      private System.Windows.Forms.ComboBox typeComboBox;
+      private System.Windows.Forms.ComboBox juzComboBox;
       private System.Windows.Forms.Label label4;
       private System.Windows.Forms.ComboBox dynamicGapComboBox;
       private System.Windows.Forms.NumericUpDown fixedGapNumericUpDown;

@@ -629,28 +629,10 @@ namespace QuranMemorizeMp3Tool
          return targetPage;
       }
 
-      public static AyaRange GetAyaRangeFromGeneralIndex(int index, CategorizeType categorizeType)
+      public static AyaRange GetAyaRangeFromGeneralIndex(int index)
       {
-         AyaRange result = new AyaRange();
-         switch (categorizeType)
-         {
-            case CategorizeType.ByPage:
-            case CategorizeType.ByDailyPlan:
-               result = GetAyaRangeFromPageIndex(index);
-               break;
-            case CategorizeType.ByQuarterHizb:
-            case CategorizeType.ByHalfHizb:
-            case CategorizeType.ByHizb:
-            case CategorizeType.ByJuz:
-               result = GetAyaRangeFromHizbJuzIndex(index, categorizeType);
-               break;
-            default: // by sura
-               result.startAyaInfo.suraNumber = index + 1;
-               result.startAyaInfo.ayaNumber = 1;
-               result.endAyaInfo.suraNumber = index + 1;
-               result.endAyaInfo.ayaNumber = SURA_NUM_AYAHS[index];
-               break;
-         }
+         AyaRange result = GetAyaRangeFromPageIndex(index);
+        
          return result;
       }
 
