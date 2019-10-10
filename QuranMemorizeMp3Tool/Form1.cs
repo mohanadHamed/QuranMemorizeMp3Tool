@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -60,7 +61,8 @@ namespace QuranMemorizeMp3Tool
          var juz = juzComboBox.SelectedIndex + 1;
          var dynamicGap = (DynamicGap)dynamicGapComboBox.SelectedIndex;
 
-         QuranMp3JoinUtil.GenerateJoinedMp3(srcTextBox.Text, destTextBox.Text, juz, dynamicGap, fixedGapNumericUpDown.Value);
+         QuranMp3JoinUtil joinUtil = new QuranMp3JoinUtil(srcTextBox.Text, destTextBox.Text);
+         joinUtil.GenerateJoinedMp3(juz, dynamicGap, fixedGapNumericUpDown.Value, progressBar);
       }
    }
 }

@@ -43,6 +43,11 @@ namespace QuranMemorizeMp3Tool
       {
          return info.ayaNumber == ayaNumber && info.suraNumber == suraNumber;
       }
+
+      public static AyaInfo Create(int sura, int aya)
+      {
+         return new AyaInfo() { suraNumber = sura, ayaNumber = aya };
+      }
    }
 
    public static class QuranArrayHelper
