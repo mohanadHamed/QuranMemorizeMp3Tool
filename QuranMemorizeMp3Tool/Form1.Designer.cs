@@ -180,11 +180,6 @@
          this.fixedGapNumericUpDown.Name = "fixedGapNumericUpDown";
          this.fixedGapNumericUpDown.Size = new System.Drawing.Size(63, 20);
          this.fixedGapNumericUpDown.TabIndex = 10;
-         this.fixedGapNumericUpDown.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
          // 
          // label5
          // 

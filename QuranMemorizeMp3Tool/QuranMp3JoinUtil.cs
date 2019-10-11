@@ -39,7 +39,9 @@ namespace QuranMemorizeMp3Tool
                   var gapSeconds = GetGapForAya(ayaInfo, dynamicGap, ayaInfo.EqualsAya(ayaInfos[ayaInfos.Count - 1]));
                   for(int gapNumber = 0; gapNumber < gapSeconds; gapNumber++)
                   {
-                     AppendMp3ToFileStream(FullAyaFileName("blank.mp3"), fs);
+                     //AppendMp3ToFileStream(FullAyaFileName("blank.mp3"), fs);
+                     blankAudioOneSecondStream.Seek(0, SeekOrigin.Begin);
+                     blankAudioOneSecondStream.CopyTo(fs);
                      Application.DoEvents();
                   }
 
