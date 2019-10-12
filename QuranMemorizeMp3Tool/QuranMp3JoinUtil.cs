@@ -5,6 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Net;
+using System.Threading;
 
 namespace QuranMemorizeMp3Tool
 {
@@ -30,6 +31,7 @@ namespace QuranMemorizeMp3Tool
 
       public void Done()
       {
+         Thread.Sleep(500);
          Processing = false;
          downloadProgressBar.Value = 0;
          totalProgressBar.Value = 0;
@@ -43,8 +45,9 @@ namespace QuranMemorizeMp3Tool
          CleanDirectory(dstDir);
 
          var navItems = QuranDailyPlanUtil.GetAllNavigationItems(juz);
-         var blankAudioOneSecondStream = Assembly.GetEntryAssembly().GetManifestResourceStream("QuranMemorizeMp3Tool.blank_one_sec.mp3");
-         
+         var blankAudioOneSecondStream = Assembly.GetEntryAssembly().GetManifestResourceStream("QuranMemorizeMp3Tool.blank_64kbps.mp3");
+         var blankBytes = GetStreamBytes(blankAudioOneSecondStream);
+
          int currentDay = 1;
          foreach (var navItem in navItems)
          {
@@ -56,21 +59,25 @@ namespace QuranMemorizeMp3Tool
                if (Processing == false) break;
 
                var ayaInfos = GetRangeAyaList(navItem.rangeOfAyas);
+               DownloadAyaIfNeeded(ayaInfos[0]);
                foreach (var ayaInfo in ayaInfos)
                {
                   var isLastAya = ayaInfo.EqualsAya(ayaInfos[ayaInfos.Count - 1]);
                   var nextAyaInfo = isLastAya ? ayaInfo : AyaUtil.GetNextAyaInfoFromCurrent(ayaInfo);
 
-                  DownloadAyaIfNeeded(ayaInfo);
-                  DownloadAyaIfNeeded(nextAyaInfo);
+                  if (isLastAya == false)
+                  {
+                     DownloadAyaIfNeeded(nextAyaInfo);
+                  }
 
                   AppendMp3ToFileStream(FullAyaFileName(FileNameForAya(ayaInfo)), fs);
                   var gapSeconds = GetGapForAya(ayaInfo, dynamicGap, nextAyaInfo, navItem.IsRevision);
                   for(int gapNumber = 0; gapNumber < gapSeconds; gapNumber++)
                   {
-                     //AppendMp3ToFileStream(FullAyaFileName("blank.mp3"), fs);
-                     blankAudioOneSecondStream.Seek(0, SeekOrigin.Begin);
-                     blankAudioOneSecondStream.CopyTo(fs);
+                      AppendMp3DataToFileStream(blankBytes, fs);
+
+                     //blankAudioOneSecondStream.Seek(0, SeekOrigin.Begin);
+                     //blankAudioOneSecondStream.CopyTo(fs);
                      Application.DoEvents();
                   }
 
@@ -87,10 +94,23 @@ namespace QuranMemorizeMp3Tool
          Done();
       }
 
+      private byte[] GetStreamBytes(Stream s)
+      {
+         var buf = new byte[s.Length];
+         s.Seek(0, SeekOrigin.Begin);
+         s.Read(buf, 0, (int)s.Length);
+
+         return buf;
+      }
       private void AppendMp3ToFileStream(string mp3File, FileStream fs)
       {
          var buffer = File.ReadAllBytes(mp3File);
-         fs.Write(buffer, 0, buffer.Length);
+         AppendMp3DataToFileStream(buffer, fs);
+      }
+
+      private void AppendMp3DataToFileStream(byte[] mp3Data, FileStream fs)
+      {
+         fs.Write(mp3Data, 0, mp3Data.Length);
       }
 
       private string FullAyaFileName(string ayaFile)
@@ -102,8 +122,8 @@ namespace QuranMemorizeMp3Tool
       {
          var currentAyaFile = FullAyaFileName(FileNameForAya(aya));
          var nextAyaFile = FullAyaFileName(FileNameForAya(nextAya));
-         var currentAyaDuration = new Mp3FileReader(currentAyaFile).TotalTime.TotalSeconds;
-         var nextAyaDuration = new Mp3FileReader(nextAyaFile).TotalTime.TotalSeconds;
+         var currentAyaDuration = GetMediaDuration(currentAyaFile);
+         var nextAyaDuration = GetMediaDuration(nextAyaFile);
          var usedDuration = isRevision ? nextAyaDuration : currentAyaDuration;
          double result;
 
@@ -126,6 +146,29 @@ namespace QuranMemorizeMp3Tool
          }
 
          return (int) (result + 0.5);
+      }
+
+      double GetMediaDuration(string MediaFilename)
+      {
+         double duration = 0.0;
+         using (FileStream fs = File.OpenRead(MediaFilename))
+         {
+            Mp3Frame frame = Mp3Frame.LoadFromStream(fs);
+
+            while (frame != null)
+            {
+               if (frame.ChannelMode == ChannelMode.Mono)
+               {
+                  duration += (double)frame.SampleCount * 2.0 / (double)frame.SampleRate;
+               }
+               else
+               {
+                  duration += (double)frame.SampleCount * 4.0 / (double)frame.SampleRate;
+               }
+               frame = Mp3Frame.LoadFromStream(fs);
+            }
+         }
+         return duration;
       }
 
       public static string FileNameForAya(AyaInfo aya)

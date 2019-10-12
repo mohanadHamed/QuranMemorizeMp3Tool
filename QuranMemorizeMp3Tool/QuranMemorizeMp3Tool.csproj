@@ -90,7 +90,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="blank_one_sec.mp3" />
+    <EmbeddedResource Include="blank_128kbps.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="blank_8kbps.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="blank_64kbps.mp3" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

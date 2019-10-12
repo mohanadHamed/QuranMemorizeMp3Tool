@@ -21,7 +21,7 @@ namespace QuranMemorizeMp3Tool
       new Reciter(1, "Husary_128kbps", "Mahmood AL Husary", "محمود خليل الحصري"),
       new Reciter(1, "MaherAlMuaiqly128kbps", "Maher Muaiqly", "ماهر المعيقلي"),
       new Reciter(1, "Ahmed_ibn_Ali_al-Ajamy_128kbps_ketaballah.net", "Ahmad Al Ajmi", "أحمد العجمي"),
-      new Reciter(1, "Ali_Jaber_64kbps", "ALi Jaber", "علي جابر"),
+      new Reciter(1, "Ali_Jaber_64kbps", "Ali Jaber", "علي جابر"),
       new Reciter(1, "Minshawy_Murattal_128kbps", "AL Menshawi", "محمد صديق المنشاوي"),
       new Reciter(1, "Nasser_Alqatami_128kbps", "Naser Qtami", "ناصر القطامي"),
 		//new Reciter(1, "sayegh", "Tawfiq AL Sayegh", "توفيق الصائغ"),
