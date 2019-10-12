@@ -166,7 +166,7 @@ namespace QuranMemorizeMp3Tool
 
       static string GetNavigationItemTitle(MemorizeNavigationItem navItem, CategorizeType categorizeType, int generalIndex)
       {
-         return "";
+         return string.Format("page_{0}", generalIndex + 1);
       }
 
    }

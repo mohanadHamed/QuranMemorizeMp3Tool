@@ -13,6 +13,7 @@ namespace QuranMemorizeMp3Tool
 {
    public enum DynamicGap
    {
+      NoGap,
       CurrentAyaDurationHalf,
       CurrentAyaDurationOne,
       CurrentAyaDuratioOneAndHalf,
@@ -24,23 +25,25 @@ namespace QuranMemorizeMp3Tool
    }
    public partial class Form1 : Form
    {
+      QuranMp3JoinUtil joinUtil;
 
       public Form1()
       {
          InitializeComponent();
+         InitializeReciterComboBox();
       }
 
-      private void srcBrowseButton_Click(object sender, EventArgs e)
+      private void InitializeReciterComboBox()
       {
-         using (var fbd = new FolderBrowserDialog())
-         {
-            DialogResult result = fbd.ShowDialog();
+         List<string> reciterNames = new List<string>();
 
-            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
-            {
-               srcTextBox.Text = fbd.SelectedPath;
-            }
+         foreach(var reciter in RecitersUtility.allReciters)
+         {
+            reciterNames.Add(reciter.nameEn);
          }
+
+         reciterComboBox.Items.AddRange(reciterNames.ToArray());
+         reciterComboBox.SelectedIndex = 0;
       }
 
       private void destBrowseButton_Click(object sender, EventArgs e)
@@ -56,13 +59,52 @@ namespace QuranMemorizeMp3Tool
          }
       }
 
-      private void button3_Click(object sender, EventArgs e)
+      private void generateButton_Click(object sender, EventArgs e)
       {
-         var juz = juzComboBox.SelectedIndex + 1;
-         var dynamicGap = (DynamicGap)dynamicGapComboBox.SelectedIndex;
+         if(string.IsNullOrEmpty(destTextBox.Text))
+         {
+            MessageBox.Show("Please select output directory");
+            return;
+         }
 
-         QuranMp3JoinUtil joinUtil = new QuranMp3JoinUtil(srcTextBox.Text, destTextBox.Text);
-         joinUtil.GenerateJoinedMp3(juz, dynamicGap, fixedGapNumericUpDown.Value, progressBar);
+         try
+         {
+            var juz = juzComboBox.SelectedIndex + 1;
+            var dynamicGap = (DynamicGap)dynamicGapComboBox.SelectedIndex;
+
+            generateButton.Enabled = false;
+            cancelButton.Enabled = true;
+            joinUtil = new QuranMp3JoinUtil(RecitersUtility.allReciters[reciterComboBox.SelectedIndex], destTextBox.Text, downloadProgressBar, totalProgressBar);
+            joinUtil.GenerateJoinedMp3(juz, dynamicGap, fixedGapNumericUpDown.Value);
+
+            while (joinUtil.Processing)
+            {
+               Application.DoEvents();
+            }
+
+            MessageBox.Show("Done");
+         }
+         catch(Exception ex)
+         {
+            MessageBox.Show("Error" + ex.Message);
+            Reset();
+         }
+      }
+
+      private void cancelButton_Click(object sender, EventArgs e)
+      {
+         Reset();
+      }
+
+      private void Reset()
+      {
+         if (joinUtil != null)
+         {
+            joinUtil.Done();
+         }
+
+         cancelButton.Enabled = false;
+         generateButton.Enabled = true;
       }
    }
 }

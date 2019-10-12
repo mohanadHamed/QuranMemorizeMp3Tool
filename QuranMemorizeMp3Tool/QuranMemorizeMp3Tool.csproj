@@ -62,6 +62,7 @@
     <Compile Include="QuranArrayHelper.cs" />
     <Compile Include="QuranDailyPlanUtil.cs" />
     <Compile Include="QuranMp3JoinUtil.cs" />
+    <Compile Include="ReciterUtility.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

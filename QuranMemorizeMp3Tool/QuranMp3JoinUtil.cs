@@ -2,41 +2,72 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Net;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace QuranMemorizeMp3Tool
 {
    class QuranMp3JoinUtil
    {
-      private string srcDir;
+      public bool Processing { get; private set; }
+
+      private Reciter reciter;
       private string dstDir;
+      private ProgressBar downloadProgressBar;
+      private ProgressBar totalProgressBar;
+      private bool downloadCompleted;
 
-      public QuranMp3JoinUtil(string srcDir, string dstDir)
+      private const string stageDir = "stage";
+
+      public QuranMp3JoinUtil(Reciter reciter, string dstDir, ProgressBar downloadProgressBar, ProgressBar totalProgressBar)
       {
-         this.srcDir = srcDir;
+         this.reciter = reciter;
          this.dstDir = dstDir;
-
+         this.downloadProgressBar = downloadProgressBar;
+         this.totalProgressBar = totalProgressBar;
       }
-      public void GenerateJoinedMp3(int juz, DynamicGap dynamicGap, decimal fixedGap, System.Windows.Forms.ProgressBar progressBar)
+
+      public void Done()
       {
+         Processing = false;
+         downloadProgressBar.Value = 0;
+         totalProgressBar.Value = 0;
+      }
+
+      public void GenerateJoinedMp3(int juz, DynamicGap dynamicGap, decimal fixedGap)
+      {
+         Processing = true;
+
+         CleanDirectory(stageDir);
+         CleanDirectory(dstDir);
+
          var navItems = QuranDailyPlanUtil.GetAllNavigationItems(juz);
          var blankAudioOneSecondStream = Assembly.GetEntryAssembly().GetManifestResourceStream("QuranMemorizeMp3Tool.blank_one_sec.mp3");
          
          int currentDay = 1;
          foreach (var navItem in navItems)
          {
+            if (Processing == false) break;
+
             var outFileName = Path.Combine(dstDir, string.Format("day_{0}_{1}.mp3", currentDay++, navItem.Title));
             using (var fs = File.OpenWrite(outFileName))
             {
+               if (Processing == false) break;
+
                var ayaInfos = GetRangeAyaList(navItem.rangeOfAyas);
                foreach (var ayaInfo in ayaInfos)
                {
+                  var isLastAya = ayaInfo.EqualsAya(ayaInfos[ayaInfos.Count - 1]);
+                  var nextAyaInfo = isLastAya ? ayaInfo : AyaUtil.GetNextAyaInfoFromCurrent(ayaInfo);
+
+                  DownloadAyaIfNeeded(ayaInfo);
+                  DownloadAyaIfNeeded(nextAyaInfo);
+
                   AppendMp3ToFileStream(FullAyaFileName(FileNameForAya(ayaInfo)), fs);
-                  var gapSeconds = GetGapForAya(ayaInfo, dynamicGap, ayaInfo.EqualsAya(ayaInfos[ayaInfos.Count - 1]));
+                  var gapSeconds = GetGapForAya(ayaInfo, dynamicGap, nextAyaInfo);
                   for(int gapNumber = 0; gapNumber < gapSeconds; gapNumber++)
                   {
                      //AppendMp3ToFileStream(FullAyaFileName("blank.mp3"), fs);
@@ -51,9 +82,11 @@ namespace QuranMemorizeMp3Tool
                fs.Flush();
             }
 
-            progressBar.Value = Math.Min(100, 100 * currentDay / navItems.Count);
+            totalProgressBar.Value = Math.Min(100, 100 * currentDay / navItems.Count);
             Application.DoEvents();
          }
+
+         Done();
       }
 
       private void AppendMp3ToFileStream(string mp3File, FileStream fs)
@@ -64,12 +97,11 @@ namespace QuranMemorizeMp3Tool
 
       private string FullAyaFileName(string ayaFile)
       {
-         return Path.Combine(srcDir, ayaFile);
+         return Path.Combine(stageDir, ayaFile);
       }
 
-      private int GetGapForAya(AyaInfo aya, DynamicGap dynamicGap, bool isLastAya)
+      private int GetGapForAya(AyaInfo aya, DynamicGap dynamicGap, AyaInfo nextAya)
       {
-         var nextAya = isLastAya ? aya : AyaUtil.GetNextAyaInfoFromCurrent(aya);
          var currentAyaFile = FullAyaFileName(FileNameForAya(aya));
          var nextAyaFile = FullAyaFileName(FileNameForAya(nextAya));
          var currentAyaDuration = new Mp3FileReader(currentAyaFile).TotalTime.TotalSeconds;
@@ -100,15 +132,19 @@ namespace QuranMemorizeMp3Tool
                result = nextAyaDuration * 1.5f;
                break;
             case DynamicGap.NextAyaDurationTwo:
-            default:
                result = nextAyaDuration * 2f;
+               break;
+
+            case DynamicGap.NoGap:
+            default:
+               result = 0;
                break;
          }
 
          return (int) (result + 0.5);
       }
 
-      private static string FileNameForAya(AyaInfo aya)
+      public static string FileNameForAya(AyaInfo aya)
       {
          var suraStr = ThreeDigit(aya.suraNumber.ToString());
          var ayaStr = ThreeDigit(aya.ayaNumber.ToString());
@@ -140,7 +176,7 @@ namespace QuranMemorizeMp3Tool
          return result;
       }
 
-      static string ThreeDigit(string s)
+      private static string ThreeDigit(string s)
       {
          string result = s;
          while (result.Length < 3)
@@ -149,6 +185,47 @@ namespace QuranMemorizeMp3Tool
          }
 
          return result;
+      }
+
+      private static void CleanDirectory(string dir)
+      {
+         if(Directory.Exists(dir) == false)
+         {
+            Directory.CreateDirectory(dir);
+            return;
+         }
+
+         DirectoryInfo di = new DirectoryInfo(dir);
+         foreach (FileInfo file in di.EnumerateFiles()) file.Delete();
+         foreach (DirectoryInfo subDirectory in di.EnumerateDirectories()) subDirectory.Delete(true);
+      }
+
+      private void DownloadAyaIfNeeded(AyaInfo ayaInfo)
+      {
+         var ayaLocalFile = FullAyaFileName(FileNameForAya(ayaInfo));
+         if (File.Exists(ayaLocalFile)) return;
+
+         using (var client = new WebClient())
+         {
+            downloadCompleted = false;
+            client.DownloadProgressChanged += Client_DownloadProgressChanged;
+            client.DownloadFileCompleted += Client_DownloadFileCompleted;
+            client.DownloadFileAsync(new Uri(RecitersUtility.GetURLForAyah(reciter, ayaInfo.suraNumber, ayaInfo.ayaNumber)), ayaLocalFile);
+            while (downloadCompleted == false)
+            {
+               Application.DoEvents();
+            }
+         }
+      }
+
+      private void Client_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+      {
+         downloadCompleted = true;
+      }
+
+      private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+      {
+         downloadProgressBar.Value = e.ProgressPercentage;
       }
    }
 }
