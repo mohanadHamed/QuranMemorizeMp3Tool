@@ -78,6 +78,7 @@ namespace QuranMemorizeMp3Tool
          int minItem = Math.Max(0, currentNavItemIndex - 4);
          navItem.Title = GetRevisionTitleAccordingToNumberOfPages(minItem, currentNavItemIndex);
          navItem.rangeOfAyas = GetMergedAyaRange(orgItems[minItem], orgItems[currentNavItemIndex]);
+         navItem.IsRevision = true;
          return navItem;
       }
 
@@ -93,6 +94,7 @@ namespace QuranMemorizeMp3Tool
          maxItem = startItem + count / 2 - 1;
          navItem.Title = "1st half revision";
          navItem.rangeOfAyas = GetMergedAyaRange(orgItems[minItem], orgItems[maxItem]);
+         navItem.IsRevision = true;
          result.Add(navItem);
 
          navItem = new MemorizeNavigationItem();
@@ -101,6 +103,7 @@ namespace QuranMemorizeMp3Tool
          maxItem = endItem;
          navItem.Title = "2nd half revision";
          navItem.rangeOfAyas = GetMergedAyaRange(orgItems[minItem], orgItems[maxItem]);
+         navItem.IsRevision = true;
          result.Add(navItem);
       }
 
@@ -115,6 +118,7 @@ namespace QuranMemorizeMp3Tool
          maxItem = endItem;
          navItem.Title = "Full juz revision";
          navItem.rangeOfAyas = GetMergedAyaRange(orgItems[minItem], orgItems[maxItem]);
+         navItem.IsRevision = true;
          result.Add(navItem);
       }
 

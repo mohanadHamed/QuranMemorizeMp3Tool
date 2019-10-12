@@ -10,6 +10,9 @@ namespace QuranMemorizeMp3Tool
    {
       public AyaRange rangeOfAyas;
 
-      public string Title { get; internal set; }
+      public string Title { get; set; }
+
+      public bool IsRevision { get; set; }
+
    }
 }

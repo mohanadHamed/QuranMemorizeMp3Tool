@@ -147,19 +147,14 @@
          this.dynamicGapComboBox.FormattingEnabled = true;
          this.dynamicGapComboBox.Items.AddRange(new object[] {
             "No Gap",
-            "Current Aya Duration (0.5x) - Used for memorizing",
-            "Current Aya Duration (1x) - Used for memorizing",
-            "Current Aya Duration (1.5x) - Used for memorizing",
-            "Current Aya Duration (2x) - Used for memorizing",
-            "Next Aya Duration (0.5x) - Used for revision",
-            "Next Aya Duration (1x) - Used for revision",
-            "Next Aya Duration (1.5x) - Used for revision",
-            "Next Aya Duration (2x) - Used for revision"});
+            "Half Aya Duration (0.5x)",
+            "Same Aya Duration (1x)",
+            "One and Half Aya Duration (1.5x)"});
          this.dynamicGapComboBox.Location = new System.Drawing.Point(135, 131);
          this.dynamicGapComboBox.Name = "dynamicGapComboBox";
          this.dynamicGapComboBox.Size = new System.Drawing.Size(256, 21);
          this.dynamicGapComboBox.TabIndex = 9;
-         this.dynamicGapComboBox.Text = "Current Aya Duration (0.5x) - Used for memorizing";
+         this.dynamicGapComboBox.Text = "Same Aya Duration (1x)";
          // 
          // fixedGapNumericUpDown
          // 
@@ -188,14 +183,14 @@
          // 
          // totalProgressBar
          // 
-         this.totalProgressBar.Location = new System.Drawing.Point(12, 410);
+         this.totalProgressBar.Location = new System.Drawing.Point(12, 403);
          this.totalProgressBar.Name = "totalProgressBar";
          this.totalProgressBar.Size = new System.Drawing.Size(645, 23);
          this.totalProgressBar.TabIndex = 13;
          // 
          // generateButton
          // 
-         this.generateButton.Location = new System.Drawing.Point(135, 247);
+         this.generateButton.Location = new System.Drawing.Point(149, 247);
          this.generateButton.Name = "generateButton";
          this.generateButton.Size = new System.Drawing.Size(148, 47);
          this.generateButton.TabIndex = 14;
@@ -213,7 +208,7 @@
          // 
          // downloadProgressBar
          // 
-         this.downloadProgressBar.Location = new System.Drawing.Point(12, 347);
+         this.downloadProgressBar.Location = new System.Drawing.Point(12, 340);
          this.downloadProgressBar.Name = "downloadProgressBar";
          this.downloadProgressBar.Size = new System.Drawing.Size(645, 23);
          this.downloadProgressBar.TabIndex = 16;
@@ -221,7 +216,7 @@
          // label7
          // 
          this.label7.AutoSize = true;
-         this.label7.Location = new System.Drawing.Point(9, 322);
+         this.label7.Location = new System.Drawing.Point(9, 315);
          this.label7.Name = "label7";
          this.label7.Size = new System.Drawing.Size(99, 13);
          this.label7.TabIndex = 17;
@@ -230,7 +225,7 @@
          // label8
          // 
          this.label8.AutoSize = true;
-         this.label8.Location = new System.Drawing.Point(9, 385);
+         this.label8.Location = new System.Drawing.Point(9, 378);
          this.label8.Name = "label8";
          this.label8.Size = new System.Drawing.Size(75, 13);
          this.label8.TabIndex = 18;
@@ -239,7 +234,7 @@
          // cancelButton
          // 
          this.cancelButton.Enabled = false;
-         this.cancelButton.Location = new System.Drawing.Point(346, 247);
+         this.cancelButton.Location = new System.Drawing.Point(326, 247);
          this.cancelButton.Name = "cancelButton";
          this.cancelButton.Size = new System.Drawing.Size(148, 47);
          this.cancelButton.TabIndex = 19;

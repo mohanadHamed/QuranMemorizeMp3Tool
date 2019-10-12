@@ -14,14 +14,9 @@ namespace QuranMemorizeMp3Tool
    public enum DynamicGap
    {
       NoGap,
-      CurrentAyaDurationHalf,
-      CurrentAyaDurationOne,
-      CurrentAyaDuratioOneAndHalf,
-      CurrentAyaDurationTwo,
-      NextAyaDurationHalf,
-      NextAyaDurationOne,
-      NextAyaDuratioOneAndHalf,
-      NextAyaDurationTwo
+      AyaDurationHalf,
+      AyaDurationOne,
+      AyaDuratioOneAndHalf
    }
    public partial class Form1 : Form
    {
@@ -83,6 +78,7 @@ namespace QuranMemorizeMp3Tool
             }
 
             MessageBox.Show("Done");
+            Reset();
          }
          catch(Exception ex)
          {

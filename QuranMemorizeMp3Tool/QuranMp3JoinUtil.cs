@@ -5,8 +5,6 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Net;
-using System.Threading.Tasks;
-using System.Threading;
 
 namespace QuranMemorizeMp3Tool
 {
@@ -67,7 +65,7 @@ namespace QuranMemorizeMp3Tool
                   DownloadAyaIfNeeded(nextAyaInfo);
 
                   AppendMp3ToFileStream(FullAyaFileName(FileNameForAya(ayaInfo)), fs);
-                  var gapSeconds = GetGapForAya(ayaInfo, dynamicGap, nextAyaInfo);
+                  var gapSeconds = GetGapForAya(ayaInfo, dynamicGap, nextAyaInfo, navItem.IsRevision);
                   for(int gapNumber = 0; gapNumber < gapSeconds; gapNumber++)
                   {
                      //AppendMp3ToFileStream(FullAyaFileName("blank.mp3"), fs);
@@ -100,39 +98,25 @@ namespace QuranMemorizeMp3Tool
          return Path.Combine(stageDir, ayaFile);
       }
 
-      private int GetGapForAya(AyaInfo aya, DynamicGap dynamicGap, AyaInfo nextAya)
+      private int GetGapForAya(AyaInfo aya, DynamicGap dynamicGap, AyaInfo nextAya, bool isRevision)
       {
          var currentAyaFile = FullAyaFileName(FileNameForAya(aya));
          var nextAyaFile = FullAyaFileName(FileNameForAya(nextAya));
          var currentAyaDuration = new Mp3FileReader(currentAyaFile).TotalTime.TotalSeconds;
          var nextAyaDuration = new Mp3FileReader(nextAyaFile).TotalTime.TotalSeconds;
+         var usedDuration = isRevision ? nextAyaDuration : currentAyaDuration;
          double result;
 
          switch(dynamicGap)
          {
-            case DynamicGap.CurrentAyaDurationHalf:
-               result = currentAyaDuration * 0.5f;
+            case DynamicGap.AyaDurationHalf:
+               result = usedDuration * 0.5f;
                break;
-            case DynamicGap.CurrentAyaDurationOne:
-               result = currentAyaDuration * 1f;
+            case DynamicGap.AyaDurationOne:
+               result = usedDuration * 1f;
                break;
-            case DynamicGap.CurrentAyaDuratioOneAndHalf:
-               result = currentAyaDuration * 1.5f;
-               break;
-            case DynamicGap.CurrentAyaDurationTwo:
-               result = currentAyaDuration * 2f;
-               break;
-            case DynamicGap.NextAyaDurationHalf:
-               result = nextAyaDuration * 0.5f;
-               break;
-            case DynamicGap.NextAyaDurationOne:
-               result = nextAyaDuration * 1f;
-               break;
-            case DynamicGap.NextAyaDuratioOneAndHalf:
-               result = nextAyaDuration * 1.5f;
-               break;
-            case DynamicGap.NextAyaDurationTwo:
-               result = nextAyaDuration * 2f;
+            case DynamicGap.AyaDuratioOneAndHalf:
+               result = usedDuration * 1.5f;
                break;
 
             case DynamicGap.NoGap:
