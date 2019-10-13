@@ -10,7 +10,7 @@ namespace QuranMemorizeMp3Tool
       public static string[] baseRecitingURLs = {
                             "http://dyaasoft.com/strg/quran_files/",
                             "http://www.everyayah.com/data/"
-   };
+      };
 
       public static Reciter[] allReciters = new Reciter[]
       {
@@ -84,15 +84,15 @@ namespace QuranMemorizeMp3Tool
       public string nameEn;
       public string nameAr;
       public int urlIndex;
-      public int bitRate;
+      public string blankResourceName;
 
-      public Reciter(int urlIndex, string id, string nameEn, string nameAr, int bitRate)
+      public Reciter(int urlIndex, string id, string nameEn, string nameAr, string blankResourceName)
       {
          this.id = id;
          this.nameEn = nameEn;
          this.nameAr = nameAr;
          this.urlIndex = urlIndex;
-         this.bitRate = bitRate;
+         this.blankResourceName = blankResourceName;
       }
    }
 
