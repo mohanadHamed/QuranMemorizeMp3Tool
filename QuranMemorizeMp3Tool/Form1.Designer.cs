@@ -60,7 +60,7 @@
          // 
          // destBrowseButton
          // 
-         this.destBrowseButton.Location = new System.Drawing.Point(605, 52);
+         this.destBrowseButton.Location = new System.Drawing.Point(608, 52);
          this.destBrowseButton.Name = "destBrowseButton";
          this.destBrowseButton.Size = new System.Drawing.Size(75, 23);
          this.destBrowseButton.TabIndex = 5;
@@ -70,9 +70,9 @@
          // 
          // destTextBox
          // 
-         this.destTextBox.Location = new System.Drawing.Point(135, 54);
+         this.destTextBox.Location = new System.Drawing.Point(188, 54);
          this.destTextBox.Name = "destTextBox";
-         this.destTextBox.Size = new System.Drawing.Size(444, 20);
+         this.destTextBox.Size = new System.Drawing.Size(390, 20);
          this.destTextBox.TabIndex = 4;
          // 
          // label2
@@ -127,7 +127,7 @@
             "28",
             "29",
             "30"});
-         this.juzComboBox.Location = new System.Drawing.Point(135, 92);
+         this.juzComboBox.Location = new System.Drawing.Point(188, 92);
          this.juzComboBox.Name = "juzComboBox";
          this.juzComboBox.Size = new System.Drawing.Size(189, 21);
          this.juzComboBox.TabIndex = 7;
@@ -138,19 +138,21 @@
          this.label4.AutoSize = true;
          this.label4.Location = new System.Drawing.Point(13, 134);
          this.label4.Name = "label4";
-         this.label4.Size = new System.Drawing.Size(71, 13);
+         this.label4.Size = new System.Drawing.Size(171, 13);
          this.label4.TabIndex = 8;
-         this.label4.Text = "Dynamic Gap";
+         this.label4.Text = "Dynamic Gap Time After Each Aya";
          // 
          // dynamicGapComboBox
          // 
          this.dynamicGapComboBox.FormattingEnabled = true;
          this.dynamicGapComboBox.Items.AddRange(new object[] {
             "No Gap",
+            "Quarter Aya Duration (0.25x)",
             "Half Aya Duration (0.5x)",
             "Same Aya Duration (1x)",
-            "One and Half Aya Duration (1.5x)"});
-         this.dynamicGapComboBox.Location = new System.Drawing.Point(135, 131);
+            "One and Half Aya Duration (1.5x)",
+            "Double Aya Duration (2x)"});
+         this.dynamicGapComboBox.Location = new System.Drawing.Point(188, 131);
          this.dynamicGapComboBox.Name = "dynamicGapComboBox";
          this.dynamicGapComboBox.Size = new System.Drawing.Size(256, 21);
          this.dynamicGapComboBox.TabIndex = 9;
@@ -158,7 +160,7 @@
          // 
          // fixedGapNumericUpDown
          // 
-         this.fixedGapNumericUpDown.Location = new System.Drawing.Point(135, 171);
+         this.fixedGapNumericUpDown.Location = new System.Drawing.Point(188, 171);
          this.fixedGapNumericUpDown.Name = "fixedGapNumericUpDown";
          this.fixedGapNumericUpDown.Size = new System.Drawing.Size(63, 20);
          this.fixedGapNumericUpDown.TabIndex = 10;
@@ -175,7 +177,7 @@
          // label6
          // 
          this.label6.AutoSize = true;
-         this.label6.Location = new System.Drawing.Point(204, 173);
+         this.label6.Location = new System.Drawing.Point(257, 173);
          this.label6.Name = "label6";
          this.label6.Size = new System.Drawing.Size(49, 13);
          this.label6.TabIndex = 12;
@@ -201,7 +203,7 @@
          // reciterComboBox
          // 
          this.reciterComboBox.FormattingEnabled = true;
-         this.reciterComboBox.Location = new System.Drawing.Point(135, 22);
+         this.reciterComboBox.Location = new System.Drawing.Point(188, 22);
          this.reciterComboBox.Name = "reciterComboBox";
          this.reciterComboBox.Size = new System.Drawing.Size(339, 21);
          this.reciterComboBox.TabIndex = 15;

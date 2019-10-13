@@ -20,16 +20,6 @@ namespace QuranMemorizeMp3Tool
       private bool downloadCompleted;
 
       private const string stageDir = "stage";
-      private const string BlankStream128Kbps = "QuranMemorizeMp3Tool.blank_128kbps.mp3";
-      private const string BlankStream64Kbps = "QuranMemorizeMp3Tool.blank_64kbps.mp3";
-
-      private Dictionary<int, string> blankFilesMap = new Dictionary<int, string>() {
-         { 192, BlankStream128Kbps },
-         { 128, BlankStream128Kbps },
-         { 64, BlankStream64Kbps },
-         { 48, BlankStream64Kbps },
-         { 40, BlankStream64Kbps },
-         { 32, BlankStream64Kbps }};
       
       public QuranMp3JoinUtil(Reciter reciter, string dstDir, ProgressBar downloadProgressBar, ProgressBar totalProgressBar)
       {
@@ -55,7 +45,7 @@ namespace QuranMemorizeMp3Tool
          CleanDirectory(dstDir);
 
          var navItems = QuranDailyPlanUtil.GetAllNavigationItems(juz);
-         var blankAudioOneSecondStream = Assembly.GetEntryAssembly().GetManifestResourceStream(blankFilesMap[reciter.bitRate]);
+         var blankAudioOneSecondStream = Assembly.GetEntryAssembly().GetManifestResourceStream(reciter.BlankResourceName);
          var blankBytes = GetStreamBytes(blankAudioOneSecondStream);
 
          int currentDay = 1;
@@ -186,6 +176,9 @@ namespace QuranMemorizeMp3Tool
 
          switch(dynamicGap)
          {
+            case DynamicGap.AyaDurationQuarter:
+               result = usedDuration * 0.25f;
+               break;
             case DynamicGap.AyaDurationHalf:
                result = usedDuration * 0.5f;
                break;
@@ -194,6 +187,9 @@ namespace QuranMemorizeMp3Tool
                break;
             case DynamicGap.AyaDuratioOneAndHalf:
                result = usedDuration * 1.5f;
+               break;
+            case DynamicGap.AyaDurationTwo:
+               result = usedDuration * 2f;
                break;
 
             case DynamicGap.NoGap:
