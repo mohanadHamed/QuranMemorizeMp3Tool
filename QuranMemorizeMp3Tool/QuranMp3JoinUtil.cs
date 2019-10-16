@@ -6,9 +6,21 @@ using System.Reflection;
 using System.Windows.Forms;
 using System.Net;
 using System.Threading;
+using NAudio.Lame;
 
 namespace QuranMemorizeMp3Tool
 {
+   class AudioFile
+   {
+      public string FileName { get; set; }
+      public float Volume { get; set; }
+
+      public AudioFile(string fileName, float volume = 0.5f)
+      {
+         FileName = fileName;
+         Volume = volume;
+      }
+   }
    class QuranMp3JoinUtil
    {
       public bool Processing { get; private set; }
@@ -20,6 +32,7 @@ namespace QuranMemorizeMp3Tool
       private bool downloadCompleted;
 
       private const string stageDir = "stage";
+      private const string blankOneSecondBaseUrl = "https://archive.org/download/ahmedneana128kbps/";
       
       public QuranMp3JoinUtil(Reciter reciter, string dstDir, ProgressBar downloadProgressBar, ProgressBar totalProgressBar)
       {
@@ -45,8 +58,12 @@ namespace QuranMemorizeMp3Tool
          CleanDirectory(dstDir);
 
          var navItems = QuranDailyPlanUtil.GetAllNavigationItems(juz);
-         var blankAudioOneSecondStream = Assembly.GetEntryAssembly().GetManifestResourceStream(reciter.BlankResourceName);
-         var blankBytes = GetStreamBytes(blankAudioOneSecondStream);
+         // var blankAudioOneSecondStream = Assembly.GetEntryAssembly().GetManifestResourceStream(reciter.BlankResourceName);
+         // var blankBytes = GetStreamBytes(blankAudioOneSecondStream);
+         var blankOneSecondUrl = blankOneSecondBaseUrl + reciter.BlankResourceName;
+         var blankOneSecondLocalFile = Path.Combine(stageDir, reciter.BlankResourceName);
+         var blankDownloadWebClient = new WebClient();
+         blankDownloadWebClient.DownloadFile(blankOneSecondUrl, blankOneSecondLocalFile);
 
          int currentDay = 1;
          foreach (var navItem in navItems)
@@ -54,40 +71,43 @@ namespace QuranMemorizeMp3Tool
             if (Processing == false) break;
 
             var outFileName = Path.Combine(dstDir, string.Format("day_{0}_{1}.mp3", currentDay++, navItem.Title));
-            using (var fs = File.OpenWrite(outFileName))
+            var allFiles = new List<AudioFile>();
+
+            if (Processing == false) break;
+
+            var ayaInfos = GetRangeAyaList(navItem.rangeOfAyas);
+            DownloadAyaIfNeeded(ayaInfos[0]);
+            foreach (var ayaInfo in ayaInfos)
             {
-               if (Processing == false) break;
+               var isLastAya = ayaInfo.EqualsAya(ayaInfos[ayaInfos.Count - 1]);
+               var nextAyaInfo = isLastAya ? ayaInfo : AyaUtil.GetNextAyaInfoFromCurrent(ayaInfo);
 
-               var ayaInfos = GetRangeAyaList(navItem.rangeOfAyas);
-               DownloadAyaIfNeeded(ayaInfos[0]);
-               foreach (var ayaInfo in ayaInfos)
+               if (isLastAya == false)
                {
-                  var isLastAya = ayaInfo.EqualsAya(ayaInfos[ayaInfos.Count - 1]);
-                  var nextAyaInfo = isLastAya ? ayaInfo : AyaUtil.GetNextAyaInfoFromCurrent(ayaInfo);
+                  DownloadAyaIfNeeded(nextAyaInfo);
+               }
 
-                  if (isLastAya == false)
-                  {
-                     DownloadAyaIfNeeded(nextAyaInfo);
-                  }
+               // AppendMp3ToFileStream(FullAyaFileName(FileNameForAya(ayaInfo)), fs);
+               allFiles.Add(new AudioFile(FullAyaFileName(FileNameForAya(ayaInfo))));
+               var gapSeconds = GetGapForAya(ayaInfo, dynamicGap, nextAyaInfo, navItem.IsRevision);
+               for (int gapNumber = 0; gapNumber < gapSeconds; gapNumber++)
+               {
+                  allFiles.Add(new AudioFile(blankOneSecondLocalFile));
 
-                  AppendMp3ToFileStream(FullAyaFileName(FileNameForAya(ayaInfo)), fs);
-                  var gapSeconds = GetGapForAya(ayaInfo, dynamicGap, nextAyaInfo, navItem.IsRevision);
-                  for(int gapNumber = 0; gapNumber < gapSeconds; gapNumber++)
-                  {
-                    // AppendMp3StreamToFileStream(blankAudioOneSecondStream, fs);
+                  // AppendMp3StreamToFileStream(blankAudioOneSecondStream, fs);
 
-                      AppendMp3DataToFileStream(blankBytes, fs);
+                  // AppendMp3DataToFileStream(blankBytes, fs);
 
-                     //blankAudioOneSecondStream.Seek(0, SeekOrigin.Begin);
-                     //blankAudioOneSecondStream.CopyTo(fs);
-                     Application.DoEvents();
-                  }
-
+                  //blankAudioOneSecondStream.Seek(0, SeekOrigin.Begin);
+                  //blankAudioOneSecondStream.CopyTo(fs);
                   Application.DoEvents();
                }
 
-               fs.Flush();
+               Application.DoEvents();
             }
+
+
+            Combine(allFiles, outFileName);
 
             totalProgressBar.Value = Math.Min(100, 100 * currentDay / navItems.Count);
             Application.DoEvents();
@@ -324,6 +344,36 @@ namespace QuranMemorizeMp3Tool
       private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
       {
          downloadProgressBar.Value = e.ProgressPercentage;
+      }
+
+
+      /// <summary>
+      /// Creates a mashup of two or more mp3 files by using naudio
+      /// </summary>
+      /// <param name="files">Name of files as an string array</param>
+      /// These files should be existing in a temporay folder
+      /// <returns>The path of mashed up mp3 file</returns>
+      public void Combine(List<AudioFile> inputFiles, string outputFile)
+      {
+         using (var fs = File.OpenWrite(outputFile))
+         {
+            foreach (var file in inputFiles)
+            {
+               if (Processing == false) break;
+
+               Application.DoEvents();
+               Mp3FileReader reader = new Mp3FileReader(file.FileName);
+               if ((fs.Position == 0) && (reader.Id3v2Tag != null))
+               {
+                  fs.Write(reader.Id3v2Tag.RawData, 0, reader.Id3v2Tag.RawData.Length);
+               }
+               Mp3Frame frame;
+               while ((frame = reader.ReadNextFrame()) != null)
+               {
+                  fs.Write(frame.RawData, 0, frame.RawData.Length);
+               }
+            }
+         }
       }
    }
 }
