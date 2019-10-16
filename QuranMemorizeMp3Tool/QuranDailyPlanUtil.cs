@@ -92,7 +92,7 @@ namespace QuranMemorizeMp3Tool
          //prefix = Convert.ToString(result.Count + 1) + "- ";
          minItem = startItem;
          maxItem = startItem + count / 2 - 1;
-         navItem.Title = "1st half revision";
+         navItem.Title = "1st hizb revision";
          navItem.rangeOfAyas = GetMergedAyaRange(orgItems[minItem], orgItems[maxItem]);
          navItem.IsRevision = true;
          result.Add(navItem);
@@ -101,7 +101,7 @@ namespace QuranMemorizeMp3Tool
          //prefix = Convert.ToString(result.Count + 1) + "- ";
          minItem = startItem + count / 2;
          maxItem = endItem;
-         navItem.Title = "2nd half revision";
+         navItem.Title = "2nd hizb revision";
          navItem.rangeOfAyas = GetMergedAyaRange(orgItems[minItem], orgItems[maxItem]);
          navItem.IsRevision = true;
          result.Add(navItem);

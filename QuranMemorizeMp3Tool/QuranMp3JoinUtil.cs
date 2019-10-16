@@ -2,11 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Windows.Forms;
 using System.Net;
 using System.Threading;
-using NAudio.Lame;
 
 namespace QuranMemorizeMp3Tool
 {
@@ -89,7 +87,7 @@ namespace QuranMemorizeMp3Tool
 
                // AppendMp3ToFileStream(FullAyaFileName(FileNameForAya(ayaInfo)), fs);
                allFiles.Add(new AudioFile(FullAyaFileName(FileNameForAya(ayaInfo))));
-               var gapSeconds = GetGapForAya(ayaInfo, dynamicGap, nextAyaInfo, navItem.IsRevision);
+               var gapSeconds = GetGapForAya(ayaInfo, dynamicGap, nextAyaInfo, navItem.IsRevision) + fixedGap;
                for (int gapNumber = 0; gapNumber < gapSeconds; gapNumber++)
                {
                   allFiles.Add(new AudioFile(blankOneSecondLocalFile));
@@ -196,19 +194,25 @@ namespace QuranMemorizeMp3Tool
 
          switch(dynamicGap)
          {
-            case DynamicGap.AyaDurationQuarter:
+            case DynamicGap.AyaDuration25Percent:
                result = usedDuration * 0.25f;
                break;
-            case DynamicGap.AyaDurationHalf:
+            case DynamicGap.AyaDuration50Percent:
                result = usedDuration * 0.5f;
+               break;
+            case DynamicGap.AyaDuration75Percent:
+               result = usedDuration * 0.75f;
                break;
             case DynamicGap.AyaDurationOne:
                result = usedDuration * 1f;
                break;
-            case DynamicGap.AyaDuratioOneAndHalf:
+            case DynamicGap.AyaDuration125Percent:
+               result = usedDuration * 1.25f;
+               break;
+            case DynamicGap.AyaDuration150Percent:
                result = usedDuration * 1.5f;
                break;
-            case DynamicGap.AyaDurationTwo:
+            case DynamicGap.AyaDuration200Percent:
                result = usedDuration * 2f;
                break;
 
