@@ -8,7 +8,7 @@ namespace QuranMemorizeMp3Tool
    {
 
       public static string[] baseRecitingURLs = {
-                            "http://dyaasoft.com/strg/quran_files/",
+                            "https://archive.org/download/",
                             "http://www.everyayah.com/data/"
       };
 
@@ -24,7 +24,7 @@ namespace QuranMemorizeMp3Tool
       new Reciter(1, "Ali_Jaber_64kbps", "Ali Jaber", "علي جابر"),
       new Reciter(1, "Minshawy_Murattal_128kbps", "AL Menshawi", "محمد صديق المنشاوي"),
       new Reciter(1, "Nasser_Alqatami_128kbps", "Naser Qtami", "ناصر القطامي"),
-		//new Reciter(1, "sayegh", "Tawfiq AL Sayegh", "توفيق الصائغ"),
+		new Reciter(0, "sayegh_by_ayah_full", "Tawfiq AL Sayegh", "توفيق الصائغ"),
 		new Reciter(1, "Hudhaify_128kbps", "Ali Hudhaifi", "علي عبدالرحمن الحذيفي"),
       new Reciter(1, "Fares_Abbad_64kbps", "Faris Abbad", "فارس عباد"),
 		//new Reciter(1, "mhr_shakhasheero", "Maher Shakhasheero", "ماهر شخاشيرو"),
@@ -86,7 +86,7 @@ namespace QuranMemorizeMp3Tool
       public int urlIndex;
 
       public string BlankResourceName => /*"QuranMemorizeMp3Tool.resources." + */id.Replace("/", "_") + ".mp3";
-
+      
       public Reciter(int urlIndex, string id, string nameEn, string nameAr)
       {
          this.id = id;
