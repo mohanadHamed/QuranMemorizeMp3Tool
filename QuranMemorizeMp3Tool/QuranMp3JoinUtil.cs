@@ -194,23 +194,29 @@ namespace QuranMemorizeMp3Tool
 
          switch(dynamicGap)
          {
-            case DynamicGap.AyaDuration25Percent:
-               result = usedDuration * 0.25f;
+            case DynamicGap.AyaDuration20Percent:
+               result = usedDuration * 0.2f;
                break;
-            case DynamicGap.AyaDuration50Percent:
-               result = usedDuration * 0.5f;
+            case DynamicGap.AyaDuration40Percent:
+               result = usedDuration * 0.4f;
                break;
-            case DynamicGap.AyaDuration75Percent:
-               result = usedDuration * 0.75f;
+            case DynamicGap.AyaDuration60Percent:
+               result = usedDuration * 0.6f;
+               break;
+            case DynamicGap.AyaDuration80Percent:
+               result = usedDuration * 0.8f;
                break;
             case DynamicGap.AyaDurationOne:
                result = usedDuration * 1f;
                break;
-            case DynamicGap.AyaDuration125Percent:
-               result = usedDuration * 1.25f;
+            case DynamicGap.AyaDuration120Percent:
+               result = usedDuration * 1.2f;
                break;
-            case DynamicGap.AyaDuration150Percent:
-               result = usedDuration * 1.5f;
+            case DynamicGap.AyaDuration140Percent:
+               result = usedDuration * 1.4f;
+               break;
+            case DynamicGap.AyaDuration160Percent:
+               result = usedDuration * 1.6f;
                break;
             case DynamicGap.AyaDuration200Percent:
                result = usedDuration * 2f;

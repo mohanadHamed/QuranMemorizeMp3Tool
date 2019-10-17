@@ -14,12 +14,15 @@ namespace QuranMemorizeMp3Tool
    public enum DynamicGap
    {
       NoGap,
-      AyaDuration25Percent,
-      AyaDuration50Percent,
-      AyaDuration75Percent,
+      AyaDuration20Percent,
+      AyaDuration40Percent,
+      AyaDuration60Percent,
+      AyaDuration80Percent,
       AyaDurationOne,
-      AyaDuration125Percent,
-      AyaDuration150Percent,
+      AyaDuration120Percent,
+      AyaDuration140Percent,
+      AyaDuration160Percent,
+      AyaDuration180Percent,
       AyaDuration200Percent,
    }
    public partial class Form1 : Form

@@ -33,13 +33,13 @@ namespace QuranMemorizeMp3Tool
       new Reciter(1, "Abdullah_Matroud_128kbps", "Abdullah Matrood", "عبدالله مطرود"),
       new Reciter(1, "Ahmed_Neana_128kbps", "Ahmad Neana", "أحمد نعينع"),
       new Reciter(1, "Akram_AlAlaqimy_128kbps", "Akram Alaqmi", "أكرم العلاقمي"),
-      new Reciter(1, "Ali_Hajjaj_AlSuesy_128kbps", "Ali Hajjaj Swesi", "علي حجاج السويسي"),
+   //   new Reciter(1, "Ali_Hajjaj_AlSuesy_128kbps", "Ali Hajjaj Swesi", "علي حجاج السويسي"),
       new Reciter(1, "Hani_Rifai_192kbps", "Hani Rifai", "هاني الرفاعي"),
       new Reciter(1, "Ibrahim_Akhdar_32kbps", "Ibrahim Al Akhdar", "ابراهيم الأخضر"),
       new Reciter(1, "Karim_Mansoori_40kbps", "Kareem Mansori", "كريم منصوري"),
       new Reciter(1, "Khaalid_Abdullaah_al-Qahtaanee_192kbps", "Khalid AL Qahtani", "خالد القحطاني"),
       new Reciter(1, "Mohammad_al_Tablaway_128kbps", "AL Tablawi", "محمد الطبلاوي"),
-      new Reciter(1, "Muhammad_AbdulKareem_128kbps", "Mohammad AbdulKareem", "محمد عبد الكريم"),
+     // new Reciter(1, "Muhammad_AbdulKareem_128kbps", "Mohammad AbdulKareem", "محمد عبد الكريم"),
       new Reciter(1, "Muhammad_Ayyoub_128kbps", "Mohammad Ayyoub", "محمد أيوب"),
       new Reciter(1, "Muhammad_Jibreel_128kbps", "Mohammad Jibreel", "محمد جبريل"),
       new Reciter(1, "Muhsin_Al_Qasim_192kbps", "Abdul Muhsin AL Qasem", "عبد المحسن القاسم"),
@@ -47,7 +47,7 @@ namespace QuranMemorizeMp3Tool
       new Reciter(1, "Salaah_AbdulRahman_Bukhatir_128kbps", "Salah Bukhatir", "صلاح بوخاطر"),
       new Reciter(1, "Salah_Al_Budair_128kbps", "Salah AL Bdair", "صلاح البدير"),
       new Reciter(1, "Yaser_Salamah_128kbps", "Yaser Salamah", "ياسر سلامة"),
-      new Reciter(1, "khalefa_al_tunaiji_64kbps", "Khalifa AL Tunaiji", "خليفة الطنيجي"),
+     // new Reciter(1, "khalefa_al_tunaiji_64kbps", "Khalifa AL Tunaiji", "خليفة الطنيجي"),
       new Reciter(1, "mahmoud_ali_al_banna_32kbps", "Mahmood Ali AL Banna", "محمود علي البنا"),
       new Reciter(1, "aziz_alili_128kbps", "Aziz Alili", "عزيز عليلي"),
       new Reciter(1, "Abdullaah_3awwaad_Al-Juhaynee_128kbps", "Abddullah Awwad AL Juhani", "عبدالله عواد الجهني"),
@@ -61,8 +61,8 @@ namespace QuranMemorizeMp3Tool
       new Reciter(1, "Minshawy_Mujawwad_192kbps", "AL Menshawi-Mujawad", "المنشاوي-مجود"),
 		//new Reciter(1, "en_basfar_mujawwad", "ENG-Abdullah Basfar-Mujawwad", "انجليزي-عبدالله بصفر-مجود"),
 	//	new Reciter(1, "urdo_farahat_hashmi", "Urdo-Farahat Hashmi", "أردو-فرحات الهاشمي"),
-      new Reciter(1, "warsh/warsh_ibrahim_aldosary_128kbps", "Warsh-Ibrahim AL Dusari", "ورش:ابراهيم الدوسري"),
-      new Reciter(1, "warsh/warsh_yassin_al_jazaery_64kbps", "Warsh-Yassin AL Jazaery", "ورش:ياسين الجزائري"),
+    //  new Reciter(1, "warsh/warsh_ibrahim_aldosary_128kbps", "Warsh-Ibrahim AL Dusari", "ورش:ابراهيم الدوسري"),
+    //  new Reciter(1, "warsh/warsh_yassin_al_jazaery_64kbps", "Warsh-Yassin AL Jazaery", "ورش:ياسين الجزائري"),
       new Reciter(1, "warsh/warsh_Abdul_Basit_128kbps", "Warsh:Abdulbasit", "ورش:عبدالباسط")
          //new Reciter(1, "warsh_husari", "Warsh:AL Hosary", "ورش:الحصري"),
          //new Reciter(1, "tarabulsi_qalon", "Qaloon-Ahmad AL Tarabulsi", "قالون:أحمد الطرابلسي"),
@@ -85,7 +85,7 @@ namespace QuranMemorizeMp3Tool
       public string nameAr;
       public int urlIndex;
 
-      public string BlankResourceName => /*"QuranMemorizeMp3Tool.resources." + */id.Replace("/", "_") + ".mp3";
+      public string BlankResourceName => id.Replace("/", "_") + ".mp3";
       
       public Reciter(int urlIndex, string id, string nameEn, string nameAr)
       {

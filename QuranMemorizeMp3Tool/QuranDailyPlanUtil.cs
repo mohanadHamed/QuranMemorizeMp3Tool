@@ -61,12 +61,12 @@ namespace QuranMemorizeMp3Tool
             MemorizeNavigationItem navItem = new MemorizeNavigationItem();
 
             navItem.rangeOfAyas = QuranArrayHelper.GetAyaRangeFromGeneralIndex(finalIndex);
-            navItem.Title = GetNavigationItemTitle(navItem, CategorizeType.ByDailyPlan, finalIndex);
+            navItem.Title = GetNavigationItemTitle(navItem, CategorizeType.ByDailyPlan, finalIndex, juz);
 
             result.Add(navItem);
          }
 
-         result = GetDailyPlanWithRevisionItems(result);
+         result = GetDailyPlanWithRevisionItems(result, juz);
 
          return result;
       }
@@ -82,7 +82,7 @@ namespace QuranMemorizeMp3Tool
          return navItem;
       }
 
-      static void AddJuzRevisionItemsPerHizb(List<MemorizeNavigationItem> orgItems, List<MemorizeNavigationItem> result, int startItem, int endItem)
+      static void AddJuzRevisionItemsPerHizb(List<MemorizeNavigationItem> orgItems, List<MemorizeNavigationItem> result, int startItem, int endItem, int juz)
       {
          MemorizeNavigationItem navItem;
          int minItem, maxItem, count;
@@ -92,7 +92,7 @@ namespace QuranMemorizeMp3Tool
          //prefix = Convert.ToString(result.Count + 1) + "- ";
          minItem = startItem;
          maxItem = startItem + count / 2 - 1;
-         navItem.Title = "1st hizb revision";
+         navItem.Title = string.Format("hizb{0} revision", juz * 2 - 1);
          navItem.rangeOfAyas = GetMergedAyaRange(orgItems[minItem], orgItems[maxItem]);
          navItem.IsRevision = true;
          result.Add(navItem);
@@ -101,13 +101,13 @@ namespace QuranMemorizeMp3Tool
          //prefix = Convert.ToString(result.Count + 1) + "- ";
          minItem = startItem + count / 2;
          maxItem = endItem;
-         navItem.Title = "2nd hizb revision";
+         navItem.Title = string.Format("hizb{0} revision", juz * 2);
          navItem.rangeOfAyas = GetMergedAyaRange(orgItems[minItem], orgItems[maxItem]);
          navItem.IsRevision = true;
          result.Add(navItem);
       }
 
-      static void AddFullJuzRevisionItems(List<MemorizeNavigationItem> orgItems, List<MemorizeNavigationItem> result, int startItem, int endItem)
+      static void AddFullJuzRevisionItems(List<MemorizeNavigationItem> orgItems, List<MemorizeNavigationItem> result, int startItem, int endItem, int juz)
       {
          MemorizeNavigationItem navItem;
          int minItem, maxItem;
@@ -116,7 +116,7 @@ namespace QuranMemorizeMp3Tool
          //prefix = Convert.ToString(result.Count + 1) + "- ";
          minItem = startItem;
          maxItem = endItem;
-         navItem.Title = "Full juz revision";
+         navItem.Title = string.Format("juz{0} revision", juz);
          navItem.rangeOfAyas = GetMergedAyaRange(orgItems[minItem], orgItems[maxItem]);
          navItem.IsRevision = true;
          result.Add(navItem);
@@ -130,7 +130,7 @@ namespace QuranMemorizeMp3Tool
          return result;
       }
 
-      static List<MemorizeNavigationItem> GetDailyPlanWithRevisionItems(List<MemorizeNavigationItem> orgItems)
+      static List<MemorizeNavigationItem> GetDailyPlanWithRevisionItems(List<MemorizeNavigationItem> orgItems, int juz)
       {
          List<MemorizeNavigationItem> result = new List<MemorizeNavigationItem>();
 
@@ -160,17 +160,17 @@ namespace QuranMemorizeMp3Tool
 
          int startItem = 0;
          int endItem = orgItems.Count - 1;
-         AddJuzRevisionItemsPerHizb(orgItems, result, startItem, endItem);
-         AddJuzRevisionItemsPerHizb(orgItems, result, startItem, endItem);
-         AddJuzRevisionItemsPerHizb(orgItems, result, startItem, endItem);
-         AddFullJuzRevisionItems(orgItems, result, startItem, endItem);
+         AddJuzRevisionItemsPerHizb(orgItems, result, startItem, endItem, juz);
+         AddJuzRevisionItemsPerHizb(orgItems, result, startItem, endItem, juz);
+         AddJuzRevisionItemsPerHizb(orgItems, result, startItem, endItem, juz);
+         AddFullJuzRevisionItems(orgItems, result, startItem, endItem, juz);
 
          return result;
       }
 
-      static string GetNavigationItemTitle(MemorizeNavigationItem navItem, CategorizeType categorizeType, int generalIndex)
+      static string GetNavigationItemTitle(MemorizeNavigationItem navItem, CategorizeType categorizeType, int generalIndex, int juz)
       {
-         return string.Format("page_{0}", generalIndex + 1);
+         return string.Format("juz_{0}_page_{1}", juz, generalIndex + 1);
       }
 
    }

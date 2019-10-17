@@ -147,18 +147,21 @@
          this.dynamicGapComboBox.FormattingEnabled = true;
          this.dynamicGapComboBox.Items.AddRange(new object[] {
             "No Gap",
-            "25% of Aya Duration",
-            "50% of Aya Duration",
-            "75% of Aya Duration",
+            "20% of Aya Duration",
+            "40% of Aya Duration",
+            "60% of Aya Duration",
+            "80% of Aya Duration",
             "Same Aya Duration (100%)",
-            "125% of Aya Duration",
-            "150% of Aya Duration",
+            "120% of Aya Duration",
+            "140% of Aya Duration",
+            "160% of Aya Duration",
+            "180% of Aya Duration",
             "200% of Aya Duration"});
          this.dynamicGapComboBox.Location = new System.Drawing.Point(188, 131);
          this.dynamicGapComboBox.Name = "dynamicGapComboBox";
          this.dynamicGapComboBox.Size = new System.Drawing.Size(256, 21);
          this.dynamicGapComboBox.TabIndex = 9;
-         this.dynamicGapComboBox.Text = "Same Aya Duration (1x)";
+         this.dynamicGapComboBox.Text = "Same Aya Duration (100%)";
          // 
          // fixedGapNumericUpDown
          // 
