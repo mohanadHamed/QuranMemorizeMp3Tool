@@ -1,30 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace QuranMemorizeMp3Tool
 {
-   public enum DynamicGap
-   {
-      NoGap,
-      AyaDuration20Percent,
-      AyaDuration40Percent,
-      AyaDuration60Percent,
-      AyaDuration80Percent,
-      AyaDurationOne,
-      AyaDuration120Percent,
-      AyaDuration140Percent,
-      AyaDuration160Percent,
-      AyaDuration180Percent,
-      AyaDuration200Percent,
-   }
    public partial class Form1 : Form
    {
       QuranMp3JoinUtil joinUtil;

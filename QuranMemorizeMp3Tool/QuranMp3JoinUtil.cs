@@ -8,6 +8,21 @@ using System.Threading;
 
 namespace QuranMemorizeMp3Tool
 {
+   public enum DynamicGap
+   {
+      NoGap,
+      AyaDuration20Percent,
+      AyaDuration40Percent,
+      AyaDuration60Percent,
+      AyaDuration80Percent,
+      AyaDurationOne,
+      AyaDuration120Percent,
+      AyaDuration140Percent,
+      AyaDuration160Percent,
+      AyaDuration180Percent,
+      AyaDuration200Percent,
+   }
+
    class AudioFile
    {
       public string FileName { get; set; }
@@ -56,12 +71,13 @@ namespace QuranMemorizeMp3Tool
          CleanDirectory(dstDir);
 
          var navItems = QuranDailyPlanUtil.GetAllNavigationItems(juz);
-         // var blankAudioOneSecondStream = Assembly.GetEntryAssembly().GetManifestResourceStream(reciter.BlankResourceName);
-         // var blankBytes = GetStreamBytes(blankAudioOneSecondStream);
+
          var blankOneSecondUrl = blankOneSecondBaseUrl + reciter.BlankResourceName;
          var blankOneSecondLocalFile = Path.Combine(stageDir, reciter.BlankResourceName);
-         var blankDownloadWebClient = new WebClient();
-         blankDownloadWebClient.DownloadFile(blankOneSecondUrl, blankOneSecondLocalFile);
+         using (var blankDownloadWebClient = new WebClient())
+         {
+            blankDownloadWebClient.DownloadFile(blankOneSecondUrl, blankOneSecondLocalFile);
+         }
 
          int currentDay = 1;
          foreach (var navItem in navItems)
@@ -85,19 +101,12 @@ namespace QuranMemorizeMp3Tool
                   DownloadAyaIfNeeded(nextAyaInfo);
                }
 
-               // AppendMp3ToFileStream(FullAyaFileName(FileNameForAya(ayaInfo)), fs);
                allFiles.Add(new AudioFile(FullAyaFileName(FileNameForAya(ayaInfo))));
                var gapSeconds = GetGapForAya(ayaInfo, dynamicGap, nextAyaInfo, navItem.IsRevision) + fixedGap;
                for (int gapNumber = 0; gapNumber < gapSeconds; gapNumber++)
                {
                   allFiles.Add(new AudioFile(blankOneSecondLocalFile));
 
-                  // AppendMp3StreamToFileStream(blankAudioOneSecondStream, fs);
-
-                  // AppendMp3DataToFileStream(blankBytes, fs);
-
-                  //blankAudioOneSecondStream.Seek(0, SeekOrigin.Begin);
-                  //blankAudioOneSecondStream.CopyTo(fs);
                   Application.DoEvents();
                }
 
@@ -114,70 +123,6 @@ namespace QuranMemorizeMp3Tool
          Done();
       }
 
-      private byte[] GetStreamBytes(Stream s)
-      {
-         var buf = new byte[s.Length];
-         s.Seek(0, SeekOrigin.Begin);
-         s.Read(buf, 0, (int)s.Length);
-
-         return buf;
-      }
-
-      private void AppendMp3ToFileStream(string mp3File, FileStream fs)
-      {
-         var tempFileName = Path.Combine(stageDir, "temp.mp3");
-
-         if (File.Exists(tempFileName))
-         {
-            File.Delete(tempFileName);
-         }
-
-         using (var tempStream = File.OpenWrite(tempFileName))
-         {
-            try
-            {
-               using (Mp3FileReader reader = new Mp3FileReader(mp3File))
-               {
-                  AppendMp3ToFileStream(reader, tempStream);
-               }
-
-               tempStream.Seek(0, SeekOrigin.Begin);
-               tempStream.CopyTo(fs);
-            }
-            catch (Exception ex)
-            {
-               var buffer = File.ReadAllBytes(mp3File);
-               AppendMp3DataToFileStream(buffer, fs);
-            }
-         }
-      }
-
-      private void AppendMp3StreamToFileStream(Stream mp3Stream, FileStream fs)
-      {
-         using (Mp3FileReader reader = new Mp3FileReader(mp3Stream))
-         {
-            AppendMp3ToFileStream(reader, fs);
-         }
-      }
-
-      private void AppendMp3DataToFileStream(byte[] mp3Data, FileStream fs)
-      {
-         fs.Write(mp3Data, 0, mp3Data.Length);
-      }
-
-      private void AppendMp3ToFileStream(Mp3FileReader reader, FileStream fs)
-      {
-         if ((fs.Position == 0) && (reader.Id3v2Tag != null))
-         {
-            fs.Write(reader.Id3v2Tag.RawData, 0, reader.Id3v2Tag.RawData.Length);
-         }
-         Mp3Frame frame;
-         while ((frame = reader.ReadNextFrame()) != null)
-         {
-            fs.Write(frame.RawData, 0, frame.RawData.Length);
-         }
-      }
-
       private string FullAyaFileName(string ayaFile)
       {
          return Path.Combine(stageDir, ayaFile);
@@ -191,6 +136,7 @@ namespace QuranMemorizeMp3Tool
          var nextAyaDuration = GetMediaDuration(nextAyaFile);
          var usedDuration = isRevision ? nextAyaDuration : currentAyaDuration;
          double result;
+         int minGap = 1;
 
          switch(dynamicGap)
          {
@@ -225,10 +171,11 @@ namespace QuranMemorizeMp3Tool
             case DynamicGap.NoGap:
             default:
                result = 0;
+               minGap = 0;
                break;
          }
 
-         return (int) (result + 0.5);
+         return Math.Max(minGap, (int) (result + 0.5));
       }
 
       double GetMediaDuration(string MediaFileName)
@@ -356,13 +303,6 @@ namespace QuranMemorizeMp3Tool
          downloadProgressBar.Value = e.ProgressPercentage;
       }
 
-
-      /// <summary>
-      /// Creates a mashup of two or more mp3 files by using naudio
-      /// </summary>
-      /// <param name="files">Name of files as an string array</param>
-      /// These files should be existing in a temporay folder
-      /// <returns>The path of mashed up mp3 file</returns>
       public void Combine(List<AudioFile> inputFiles, string outputFile)
       {
          using (var fs = File.OpenWrite(outputFile))
