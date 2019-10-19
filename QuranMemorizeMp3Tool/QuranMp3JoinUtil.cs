@@ -192,7 +192,7 @@ namespace QuranMemorizeMp3Tool
 
             nAudioSuccess = true;
          }
-         catch(Exception ex)
+         catch(Exception)
          {
             nAudioSuccess = false;
          }
@@ -236,7 +236,7 @@ namespace QuranMemorizeMp3Tool
          {
             result.Add(AyaInfo.Create(currentSura, currentAya));
 
-            if (currentAya < QuranArrayHelper.SURA_NUM_AYAHS[currentSura - 1])
+            if (currentAya < QuranArrayHelper.suraNumAyas[currentSura - 1])
             {
                currentAya++;
             }
@@ -286,7 +286,7 @@ namespace QuranMemorizeMp3Tool
             client.DownloadProgressChanged += Client_DownloadProgressChanged;
             client.DownloadFileCompleted += Client_DownloadFileCompleted;
             client.DownloadFileAsync(new Uri(RecitersUtility.GetURLForAyah(reciter, ayaInfo.suraNumber, ayaInfo.ayaNumber)), ayaLocalFile);
-            while (downloadCompleted == false)
+            while (downloadCompleted == false && Processing)
             {
                Application.DoEvents();
             }
@@ -312,17 +312,37 @@ namespace QuranMemorizeMp3Tool
                if (Processing == false) break;
 
                Application.DoEvents();
-               Mp3FileReader reader = new Mp3FileReader(file.FileName);
-               if ((fs.Position == 0) && (reader.Id3v2Tag != null))
+               var tempOutputFile = Path.Combine(stageDir, "temp_out.mp3");
+              
+               try
                {
-                  fs.Write(reader.Id3v2Tag.RawData, 0, reader.Id3v2Tag.RawData.Length);
+                  using (var tempFileStream = File.OpenWrite(tempOutputFile))
+                  {
+                     using (Mp3FileReader reader = new Mp3FileReader(file.FileName))
+                     {
+                        if ((fs.Position == 0) && (reader.Id3v2Tag != null))
+                        {
+                           fs.Write(reader.Id3v2Tag.RawData, 0, reader.Id3v2Tag.RawData.Length);
+                        }
+                        Mp3Frame frame;
+                        while ((frame = reader.ReadNextFrame()) != null)
+                        {
+                           tempFileStream.Write(frame.RawData, 0, frame.RawData.Length);
+                        }
+                     }
+
+                     tempFileStream.Seek(0, SeekOrigin.Begin);
+                     tempFileStream.CopyTo(fs);
+                  }
                }
-               Mp3Frame frame;
-               while ((frame = reader.ReadNextFrame()) != null)
+               catch(Exception)
                {
-                  fs.Write(frame.RawData, 0, frame.RawData.Length);
+                  var buf = File.ReadAllBytes(file.FileName);
+                  fs.Write(buf, 0, buf.Length);
                }
             }
+
+            fs.Flush();
          }
       }
    }

@@ -1,9 +1,5 @@
-﻿using System;
-using System.IO;
-
-namespace QuranMemorizeMp3Tool
+﻿namespace QuranMemorizeMp3Tool
 {
-
    public static class RecitersUtility
    {
 
@@ -39,7 +35,7 @@ namespace QuranMemorizeMp3Tool
       new Reciter(1, "Karim_Mansoori_40kbps", "Kareem Mansori", "كريم منصوري"),
       new Reciter(1, "Khaalid_Abdullaah_al-Qahtaanee_192kbps", "Khalid AL Qahtani", "خالد القحطاني"),
       new Reciter(1, "Mohammad_al_Tablaway_128kbps", "AL Tablawi", "محمد الطبلاوي"),
-     // new Reciter(1, "Muhammad_AbdulKareem_128kbps", "Mohammad AbdulKareem", "محمد عبد الكريم"),
+      new Reciter(1, "Muhammad_AbdulKareem_128kbps", "Mohammad AbdulKareem", "محمد عبد الكريم"),
       new Reciter(1, "Muhammad_Ayyoub_128kbps", "Mohammad Ayyoub", "محمد أيوب"),
       new Reciter(1, "Muhammad_Jibreel_128kbps", "Mohammad Jibreel", "محمد جبريل"),
       new Reciter(1, "Muhsin_Al_Qasim_192kbps", "Abdul Muhsin AL Qasem", "عبد المحسن القاسم"),

@@ -42,7 +42,7 @@ namespace QuranMemorizeMp3Tool
             else
             {
                result.suraNumber = currentAyaInfo.suraNumber - 1;
-               result.ayaNumber = QuranArrayHelper.SURA_NUM_AYAHS[result.suraNumber - 1];
+               result.ayaNumber = QuranArrayHelper.suraNumAyas[result.suraNumber - 1];
             }
          }
 
@@ -60,7 +60,7 @@ namespace QuranMemorizeMp3Tool
          }
          else
          {
-            if (currentAyaInfo.ayaNumber < QuranArrayHelper.SURA_NUM_AYAHS[currentAyaInfo.suraNumber - 1])
+            if (currentAyaInfo.ayaNumber < QuranArrayHelper.suraNumAyas[currentAyaInfo.suraNumber - 1])
             {
                result.suraNumber = currentAyaInfo.suraNumber;
                result.ayaNumber = currentAyaInfo.ayaNumber + 1;

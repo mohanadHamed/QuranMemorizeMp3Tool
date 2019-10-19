@@ -53,7 +53,7 @@ namespace QuranMemorizeMp3Tool
    public static class QuranArrayHelper
    {
 
-      public static string[] SURA_NAMES_EN = {
+      public static string[] suraNamesEn = {
       "Al-Fatiha", "Al-Baqara", "Aal-E-Imran", "An-Nisa", "Al-Maeda",
       "Al-Anaam", "Al-Araf", "Al-Anfal", "At-Tawba", "Yunus", "Hud",
       "Yusuf", "Ar-Rad", "Ibrahim", "Al-Hijr", "An-Nahl", "Al-Isra",
@@ -78,7 +78,7 @@ namespace QuranMemorizeMp3Tool
       "An-Nas"
    };
 
-      public static string[] SURA_NAMES_AR = {
+      public static string[] suraNamesAr = {
       "الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة",
       "الانعام", "الاعراف", "الانفال", "التوبة", "يونس", "هود",
       "يوسف", "الرعد", "إبراهيم", "الحجر", "النحل", "الاسراء",
@@ -103,7 +103,7 @@ namespace QuranMemorizeMp3Tool
       "الناس"
    };
 
-      public static int[] SURA_PAGE_START = {
+      public static int[] suraPageStart = {
         1, 2, 50, 77, 106, 128, 151, 177, 187, 208, 221, 235, 249, 255, 262,
         267, 282, 293, 305, 312, 322, 332, 342, 350, 359, 367, 377, 385, 396,
         404, 411, 415, 418, 428, 434, 440, 446, 453, 458, 467, 477, 483, 489,
@@ -115,7 +115,7 @@ namespace QuranMemorizeMp3Tool
         604
     };
 
-      public static int[] PAGE_SURA_START = {
+      public static int[] pageSuraStart = {
         1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
         2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
         2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
@@ -149,7 +149,7 @@ namespace QuranMemorizeMp3Tool
         89, 89, 91, 92, 95, 97, 98, 100, 103, 106, 109, 112
     };
 
-      public static int[] PAGE_AYAH_START = {
+      public static int[] pageAyahStart = {
         1, 1, 6, 17, 25, 30, 38, 49, 58, 62, 70, 77, 84, 89, 94, 102, 106, 113,
         120, 127, 135, 142, 146, 154, 164, 170, 177, 182, 187, 191, 197, 203,
         211, 216, 220, 225, 231, 234, 238, 246, 249, 253, 257, 260, 265, 270,
@@ -187,13 +187,13 @@ namespace QuranMemorizeMp3Tool
         1, 16, 1, 24, 1, 15, 1, 1, 8, 10, 1, 1, 1, 1
     };
 
-      public static int[] JUZ_PAGE_START = {
+      public static int[] juzPageStart = {
         2, 22, 42, 62, 82, 102, 121, 142, 162, 182,
         201, 222, 242, 262, 282, 302, 322, 342, 362, 382,
         402, 422, 442, 462, 482, 502, 522, 542, 562, 582
     };
 
-      public static int[] SURA_NUM_AYAHS = {
+      public static int[] suraNumAyas = {
         7, 286, 200, 176, 120, 165, 206, 75, 129, 109, 123, 111,
         43, 52, 99, 128, 111, 110, 98, 135, 112, 78, 118, 64, 77,
         227, 93, 88, 69, 60, 34, 30, 73, 54, 45, 83, 182, 88, 75,
@@ -204,7 +204,7 @@ namespace QuranMemorizeMp3Tool
         11, 8, 3, 9, 5, 4, 7, 3, 6, 3, 5, 4, 5, 6
     };
 
-      public static bool[] SURA_IS_MAKKI = {
+      public static bool[] suraIsMakki = {
         true, false, false, false, false, true, true, false, false, true,
         true, true, false, true, true, true, true, true, true, true,
         true, false, true, false, true, true, true, true, true, true,
@@ -218,6 +218,7 @@ namespace QuranMemorizeMp3Tool
         true, true, true, true, true, true, true, true, true, false,
         true, true, true, true
     };
+
       public static QuarterHizbEndInfo[] QUARTER_HIZB_INFO_LIST =
       {
         // Hizb 1
@@ -583,20 +584,20 @@ namespace QuranMemorizeMp3Tool
 
       public static int GetPageNumberFromSuraAya(int suraNumber, int ayaNumber)
       {
-         int targetPage = SURA_PAGE_START[suraNumber - 1];
+         int targetPage = suraPageStart[suraNumber - 1];
          int suraStartPage;
          int suraEndPage;
          int currentPage, currentPageAyaStart, currentPageAyaEnd;
 
-         suraStartPage = SURA_PAGE_START[suraNumber - 1];
-         if (suraStartPage == PAGE_SURA_START.Length)
+         suraStartPage = suraPageStart[suraNumber - 1];
+         if (suraStartPage == pageSuraStart.Length)
          {
-            targetPage = PAGE_SURA_START.Length;
+            targetPage = pageSuraStart.Length;
          }
          else
          {
             suraEndPage = suraStartPage;
-            while (PAGE_SURA_START[suraEndPage - 1] <= suraNumber)
+            while (pageSuraStart[suraEndPage - 1] <= suraNumber)
                suraEndPage++;
 
             suraEndPage--;
@@ -605,22 +606,22 @@ namespace QuranMemorizeMp3Tool
 
             for (currentPage = suraStartPage; currentPage <= suraEndPage; currentPage++)
             {
-               if (PAGE_SURA_START[currentPage - 1] < suraNumber)
+               if (pageSuraStart[currentPage - 1] < suraNumber)
                {
                   currentPageAyaStart = 1;
                }
                else
                {
-                  currentPageAyaStart = PAGE_AYAH_START[currentPage - 1];
+                  currentPageAyaStart = pageAyahStart[currentPage - 1];
                }
 
                if (currentPage == suraEndPage)
                {
-                  currentPageAyaEnd = SURA_NUM_AYAHS[suraNumber - 1];
+                  currentPageAyaEnd = suraNumAyas[suraNumber - 1];
                }
                else
                {
-                  currentPageAyaEnd = PAGE_AYAH_START[currentPage - 1 + 1] - 1;
+                  currentPageAyaEnd = pageAyahStart[currentPage - 1 + 1] - 1;
                }
 
                if (ayaNumber >= currentPageAyaStart && ayaNumber <= currentPageAyaEnd)
@@ -637,99 +638,6 @@ namespace QuranMemorizeMp3Tool
       public static AyaRange GetAyaRangeFromGeneralIndex(int index)
       {
          AyaRange result = GetAyaRangeFromPageIndex(index);
-        
-         return result;
-      }
-
-      static AyaRange GetAyaRangeFromHizbJuzIndex(int hizbJuzIndex, CategorizeType categorizeType)
-      {
-         AyaRange result = new AyaRange();
-         int QHizbMultiplier = 1;
-         int indexToUse;
-
-         if (categorizeType == CategorizeType.ByQuarterHizb)
-         {
-            QHizbMultiplier = 1;
-         }
-         else if (categorizeType == CategorizeType.ByHalfHizb)
-         {
-            QHizbMultiplier = 2;
-         }
-         else if (categorizeType == CategorizeType.ByHizb)
-         {
-            QHizbMultiplier = 4;
-         }
-         else if (categorizeType == CategorizeType.ByJuz)
-         {
-            QHizbMultiplier = 8;
-         }
-
-         indexToUse = hizbJuzIndex * QHizbMultiplier;
-
-         if (indexToUse == 0)
-         {
-            result.startAyaInfo.suraNumber = 1;
-            result.startAyaInfo.ayaNumber = 1;
-         }
-         else
-         {
-            if (QUARTER_HIZB_INFO_LIST[indexToUse - 1].ayaNumber <
-               SURA_NUM_AYAHS[QUARTER_HIZB_INFO_LIST[indexToUse - 1].suraNumber - 1])
-            {
-               result.startAyaInfo.suraNumber = QUARTER_HIZB_INFO_LIST[indexToUse - 1].suraNumber;
-               result.startAyaInfo.ayaNumber = QUARTER_HIZB_INFO_LIST[indexToUse - 1].ayaNumber + 1;
-            }
-            else
-            {
-               result.startAyaInfo.suraNumber = QUARTER_HIZB_INFO_LIST[indexToUse - 1].suraNumber + 1;
-               result.startAyaInfo.ayaNumber = 1;
-            }
-         }
-         result.endAyaInfo.suraNumber = QUARTER_HIZB_INFO_LIST[indexToUse + QHizbMultiplier - 1].suraNumber;
-         result.endAyaInfo.ayaNumber = QUARTER_HIZB_INFO_LIST[indexToUse + QHizbMultiplier - 1].ayaNumber;
-         return result;
-      }
-
-      static List<AyaRange> GetAyaRangesForSuraByPage(int suraNum)
-      {
-         List<AyaRange> result = new List<AyaRange>();
-
-         int firstPage = SURA_PAGE_START[suraNum - 1];
-         int currentPage = firstPage;
-         int lastPage = firstPage;
-         while (lastPage <= 604 && PAGE_SURA_START[lastPage - 1] <= suraNum)
-         {
-            lastPage++;
-         }
-         lastPage--;
-
-         for (currentPage = firstPage; currentPage <= lastPage; currentPage++)
-         {
-            AyaRange currentPageRange = new AyaRange();
-
-            currentPageRange.startAyaInfo.suraNumber = currentPageRange.endAyaInfo.suraNumber = suraNum;
-
-            if (currentPage == firstPage)
-            {
-               currentPageRange.startAyaInfo.ayaNumber = 1;
-            }
-            else
-            {
-               currentPageRange.startAyaInfo.ayaNumber = PAGE_AYAH_START[currentPage - 1];
-            }
-
-            if (currentPage == lastPage)
-            {
-               currentPageRange.endAyaInfo.ayaNumber = SURA_NUM_AYAHS[suraNum - 1];
-            }
-            else
-            {
-               currentPageRange.endAyaInfo.ayaNumber = PAGE_AYAH_START[currentPage] - 1;
-            }
-
-            result.Add(currentPageRange);
-         }
-
 
          return result;
       }
@@ -737,17 +645,17 @@ namespace QuranMemorizeMp3Tool
       static AyaRange GetAyaRangeFromPageIndex(int pageIndex)
       {
          AyaRange result = new AyaRange();
-         result.startAyaInfo.suraNumber = PAGE_SURA_START[pageIndex];
-         result.startAyaInfo.ayaNumber = PAGE_AYAH_START[pageIndex];
-         if (pageIndex == PAGE_SURA_START.Length - 1)
+         result.startAyaInfo.suraNumber = pageSuraStart[pageIndex];
+         result.startAyaInfo.ayaNumber = pageAyahStart[pageIndex];
+         if (pageIndex == pageSuraStart.Length - 1)
          {
             result.endAyaInfo.suraNumber = 114;
-            result.endAyaInfo.ayaNumber = SURA_NUM_AYAHS[113];
+            result.endAyaInfo.ayaNumber = suraNumAyas[113];
          }
          else
          {
-            int nextPageStartSuraNumber = PAGE_SURA_START[pageIndex + 1];
-            int nextPageStartAyaNumber = PAGE_AYAH_START[pageIndex + 1];
+            int nextPageStartSuraNumber = pageSuraStart[pageIndex + 1];
+            int nextPageStartAyaNumber = pageAyahStart[pageIndex + 1];
             if (nextPageStartSuraNumber == result.startAyaInfo.suraNumber)
             {
                result.endAyaInfo.suraNumber = result.startAyaInfo.suraNumber;
@@ -758,7 +666,7 @@ namespace QuranMemorizeMp3Tool
                if (nextPageStartAyaNumber == 1)
                {
                   result.endAyaInfo.suraNumber = nextPageStartSuraNumber - 1;
-                  result.endAyaInfo.ayaNumber = SURA_NUM_AYAHS[(nextPageStartSuraNumber - 1) - 1];
+                  result.endAyaInfo.ayaNumber = suraNumAyas[(nextPageStartSuraNumber - 1) - 1];
                }
                else
                {
@@ -768,28 +676,6 @@ namespace QuranMemorizeMp3Tool
             }
          }
          return result;
-      }
-
-      public static AyaRange GetAyaRangeFromPageRange(int startPageIndex, int endPageIndex)
-      {
-         AyaRange startPageRange, endPageRange, result;
-
-         startPageRange = GetAyaRangeFromPageIndex(startPageIndex);
-         endPageRange = GetAyaRangeFromPageIndex(endPageIndex);
-
-         result = new AyaRange();
-
-         result.startAyaInfo = startPageRange.startAyaInfo;
-         result.endAyaInfo = endPageRange.endAyaInfo;
-
-         return result;
-      }
-
-      public static AyaRange GetPageRangeForAyaInfo(AyaInfo info)
-      {
-         int pageNumber = GetPageNumberFromSuraAya(info.suraNumber, info.ayaNumber);
-
-         return GetAyaRangeFromPageIndex(pageNumber - 1);
       }
    }
 }
